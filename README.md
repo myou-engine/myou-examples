@@ -1,4 +1,11 @@
-To run one of the examples locally, run `npm update` in the example folder and then you can choose one of these two alternatives:
+### Preparation
+
+* `npm install -g webpack`
+* `npm update` (inside this repo directory)
+
+### Running
+
+You can run examples in two ways
 
 1. From the browser using __Webpack__
 
