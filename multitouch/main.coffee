@@ -4,17 +4,20 @@ if process.browser
     MyouEngine = require 'myou-engine'
 {mat2, mat3, mat4, vec2, vec3, vec4, quat} = MyouEngine.glm
 
+prefix = ''
+if not (process.browser or process.android)
+    # electron
+    prefix = __dirname+'/'
+
 MYOU_PARAMS =
     total_size: 26775095
     # debug: true
     debug_physics: true
-    #if browser then ./data -- If electron ../data
-    data_dir: if process.browser then "./data" else __dirname+"/./data"
+    data_dir: prefix + 'data'
     no_mipmaps: false
     timeout: null #time to pause the main_loop
     # background_alpha: 0
     gl_options: {alpha:false, antialias:true}
-    no_s3tc: navigator.userAgent.toString().indexOf('Edge/12.')!=-1
 
 canvas = document.getElementById('myou')
 myou = new Myou canvas, MYOU_PARAMS
@@ -31,12 +34,14 @@ canvas.addEventListener('touchmove', myou.main_loop.reset_timeout)
 canvas.addEventListener('keydown', myou.main_loop.reset_timeout)
 
 # Debug info:
-db = document.getElementById 'debug'
+if not process.android
+    db = document.getElementById 'debug'
 debug = (msgs)->
-    db.style.display = 'block'
-    db.innerHTML = ''
-    for msg in msgs
-        db.innerHTML += msg + '</br>'
+    if not process.android
+        db.style.display = 'block'
+        db.innerHTML = ''
+        for msg in msgs
+            db.innerHTML += msg + '</br>'
 
 
 phy = MyouEngine.physics
