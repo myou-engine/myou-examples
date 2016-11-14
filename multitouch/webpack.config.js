@@ -70,6 +70,7 @@ module.exports = {
     resolve: {
         extensions: ['', '.webpack.js', '.web.js', '.js', '.coffee', '.json']
     },
+    node: {Buffer: false},
 }
 
 //Copy data to build
