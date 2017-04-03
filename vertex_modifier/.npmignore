@@ -1,0 +1,9 @@
+ 
+/node_modules
+/build
+npm-debug.log
+*~
+Thumbs.db
+*.blend1
+*.blend2
+*.bak
