@@ -1,0 +1,17 @@
+{
+  "name": "pbroorh",
+  "version": "0.1.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "main": "init.coffee",
+  "scripts": {
+    "start": "myou-tool serve webpack -w"
+  },
+  "dependencies": {
+    "coffee-loader": "^0.7.3",
+    "coffee-script": "^1.12.6",
+    "myou-engine": "^0.4.2",
+    "webpack": "^3.2.0"
+  }
+}
