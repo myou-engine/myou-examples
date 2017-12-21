@@ -3,7 +3,10 @@
 var webpack = require('webpack');
 var path = require('path');
 
-module.exports = {
+var myou_engine_flags = {
+    include_bullet: true,
+}
+var config = {
     output: {
         path: __dirname + '/build',
         filename: 'app.js',
@@ -20,10 +23,9 @@ module.exports = {
         rules: [
             {
                 test: /\.coffee$/,
-                loaders: [
-                    'coffee-loader',
-                    // 'source-map-loader',
-                ]
+                use: {
+                    loader: 'coffee-loader',
+                }
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
@@ -37,13 +39,14 @@ module.exports = {
             {test: /\.html$/, loader: 'raw-loader'},
         ]
     },
-    // devtool: 'inline-source-map',
     plugins: [
         /*
-        new webpack.BannerPlugin([
-            'Application (c) 20xx Your name or company. All rights reserved.',
-        ].join('\n'), {
-            raw: false
+        new webpack.BannerPlugin({
+            banner: [
+                'Your Application',
+                '(c) 20xx Your name or company. All rights reserved.',
+            ].join('\n'),
+            raw: false,
         }),
         */
         new webpack.DefinePlugin({
@@ -51,13 +54,6 @@ module.exports = {
                 NODE_ENV: '"production"'
             },
         }),
-        /*
-        new webpack.optimize.UglifyJsPlugin({
-            screw_ie8: true,
-            sourceMap: false,
-            compress: { warnings: true },
-        }),
-        */
     ],
     resolve: {
         extensions: ['.webpack.js', '.web.js', '.js', '.coffee', '.json'],
@@ -68,4 +64,28 @@ module.exports = {
             'myou-engine': path.resolve(__dirname+'/../../myou-engine/pack.coffee'),
         },
     },
+}
+
+module.exports = (env={}) => {
+    if(env.sourcemaps){
+        config.devtool = 'cheap-module-eval-source-map';
+    }
+    if(env.minify || env.uglify){
+        config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+            screw_ie8: true,
+            sourceMap: false,
+            compress: { warnings: true },
+        }));
+    }
+    if(env.babel){
+        // To use this option, install babel first with:
+        // npm add babel-core babel-preset-env
+        config.module.rules[0].use.options = {
+            transpile: {
+                presets: ['env']
+            }
+        }
+    }
+    var {handle_myou_config} = require('myou-engine/webpack.config.js');
+    return handle_myou_config(webpack, config, myou_engine_flags, env);
 }
