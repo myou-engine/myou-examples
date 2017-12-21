@@ -34,8 +34,8 @@ MyouEngine = require 'myou-engine'
 
 
 
-{GLSLDebugger} = require '../../myou-glsl-debugger/main.coffee'
-window.GLSLDebugger = GLSLDebugger
+# {GLSLDebugger} = require '../../myou-glsl-debugger/main.coffee'
+# window.GLSLDebugger = GLSLDebugger
 
 # Configure and create the engine instance
 canvas = MyouEngine.create_full_window_canvas()
@@ -162,6 +162,10 @@ class DebugCamera extends MyouEngine.Behaviour
                     @activate()
 
 
+myou.main_loop.update_fps = ({average_fps, average_render_durations}) ->
+    document.getElementById('fps').textContent =
+        "#{average_fps.toFixed 2} FPS #{average_render_durations.toFixed 2} ms"
+
 # Load the scene called "Scene", its objects and enable it
 myou.load_scene('Scene').then (scene) ->
     # At this point, the scene has loaded but not the objects.
@@ -214,10 +218,10 @@ myou.load_scene('Scene').then (scene) ->
         # window.dbg = scene.objects['Plane.006']?.materials[0].last_shader.set_debugger(new GLSLDebugger dbg_opts)
 
     setTimeout ->
-        $myou.objects.probe.probe_cube.render()
-        $myou.objects.probe.probe_cube.render()
-        $myou.objects.probe.probe_cube.render()
-        $myou.objects.Sun.render_shadow=false
+        myou.objects.probe?.probe_cube.render()
+        myou.objects.probe?.probe_cube.render()
+        myou.objects.probe?.probe_cube.render()
+        myou.objects.Sun?.render_shadow=false
     , 1000
 
     # window.requestAnimationFrame = (x) -> setTimeout x, 200
